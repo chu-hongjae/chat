@@ -1,29 +1,28 @@
 package com.chu.chat.controller;
 
-import com.chu.chat.dto.ChatRoom;
-import com.chu.chat.service.ChatService;
-import java.util.List;
+import com.chu.chat.dto.ChatMessage;
+import com.chu.chat.dto.ChatMessage.MESSAGE_TYPE;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
+
 
 @RequiredArgsConstructor
-@RestController
-@RequestMapping("/chat")
+@Controller
 public class ChatController {
 
-  private final ChatService chatService;
+  private final SimpMessageSendingOperations messagingTemplate;
 
-  @PostMapping
-  public ChatRoom createRoom(@RequestParam String name) {
-    return chatService.createRoom(name);
+  @MessageMapping("/chat/message")
+  public void message(ChatMessage message) {
+
+    if (MESSAGE_TYPE.ENTER.equals(message.getType())) {
+      message.setMessage(message.getSender() + "님이 입장하셧습니다.");
+      messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+    } else {
+      messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+    }
   }
 
-  @GetMapping
-  public List<ChatRoom> findAllRoom(){
-    return chatService.findAllRoom();
-  }
 }

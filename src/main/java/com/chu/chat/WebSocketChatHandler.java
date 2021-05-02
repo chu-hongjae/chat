@@ -13,7 +13,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-@Slf4j
+/*@Slf4j
 @RequiredArgsConstructor
 @Component
 public class WebSocketChatHandler extends TextWebSocketHandler {
@@ -36,4 +36,4 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
     super.afterConnectionClosed(session, status);
     log.info("disconnected : ", session);
   }
-}
+}*/
