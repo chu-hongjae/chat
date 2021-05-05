@@ -76,6 +76,7 @@
         if(sender != "") {
           localStorage.setItem('wschat.sender',sender);
           localStorage.setItem('wschat.roomId',roomId);
+
           location.href="/chat/room/enter/"+roomId;
         }
       }

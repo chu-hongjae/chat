@@ -64,6 +64,7 @@
     created() {
       this.roomId = localStorage.getItem('wschat.roomId');
       this.sender = localStorage.getItem('wschat.sender');
+      console.log(localStorage);
       this.findRoom();
     },
     methods: {
